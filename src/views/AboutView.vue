@@ -1,15 +1,12 @@
+<!--
+ * @Author: Dee.Xiao
+ * @Date: 2022-09-05 01:40:17
+ * @LastEditors: Dee.Xiao
+ * @LastEditTime: 2022-09-05 01:58:10
+ * @Description: 
+-->
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <div>aboutView</div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<style></style>
