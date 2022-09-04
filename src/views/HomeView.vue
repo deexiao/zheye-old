@@ -2,12 +2,18 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 03:30:00
+ * @LastEditTime: 2022-09-05 04:15:08
  * @Description: 
 -->
 <script setup lang="ts">
 import "bootstrap/dist/css/bootstrap.min.css";
 import ColumnList, { type ColumnProps } from "../components/ColumnList.vue";
+import GlobalHeader, { type UserProps } from "../components/GlobalHeader.vue";
+
+const currentUser: UserProps = {
+  isLogin: true,
+  name: "viking",
+};
 
 const list: ColumnProps[] = [
   {
@@ -39,6 +45,7 @@ const list: ColumnProps[] = [
 
 <template>
   <div class="container">
+    <global-header :user="currentUser"></global-header>
     <column-list :list="list"></column-list>
   </div>
 </template>
