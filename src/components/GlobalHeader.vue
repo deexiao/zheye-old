@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 03:59:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 15:28:31
+ * @LastEditTime: 2022-09-05 17:01:26
  * @Description: 
 -->
 <template>
@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from "vue";
 import Dropdown from "./Dropdown.vue";
 import DropdownItem from "./DropdownItem.vue";
 
@@ -45,10 +44,5 @@ export interface UserProps {
   id?: number;
 }
 
-defineProps({
-  user: {
-    type: Object as PropType<UserProps>,
-    required: true,
-  },
-});
+defineProps<{ user: UserProps }>();
 </script>

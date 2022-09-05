@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 02:01:11
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 04:04:06
+ * @LastEditTime: 2022-09-05 16:58:39
  * @Description: 专栏列表
 -->
 <template>
@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from "vue";
 import { computed } from "vue";
 import noImageIcon from "@/assets/no-image-icon.png";
 
@@ -36,12 +35,7 @@ export interface ColumnProps {
   description: string;
 }
 
-const props = defineProps({
-  list: {
-    type: Array as PropType<ColumnProps[]>,
-    required: true,
-  },
-});
+const props = defineProps<{ list: ColumnProps[] }>();
 
 const columnList = computed(() => {
   return props.list.map((column) => {

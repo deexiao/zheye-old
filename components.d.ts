@@ -10,6 +10,8 @@ declare module '@vue/runtime-core' {
     ColumnList: typeof import('./src/components/ColumnList.vue')['default']
     Dropdown: typeof import('./src/components/Dropdown.vue')['default']
     DropdownItem: typeof import('./src/components/DropdownItem.vue')['default']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     GlobalHeader: typeof import('./src/components/GlobalHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 14:45:21
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 16:03:27
+ * @LastEditTime: 2022-09-05 16:54:38
  * @Description: Dropdown
 -->
 
@@ -25,12 +25,7 @@
 import { ref, watch } from "vue";
 import useClickOutside from "../hooks/useClickOutside";
 
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-});
+defineProps<{ title: string }>();
 
 const isOpen = ref(false);
 const dropdownRef = ref<null | HTMLElement>(null);

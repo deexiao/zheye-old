@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 14:48:37
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 16:05:18
+ * @LastEditTime: 2022-09-05 16:54:50
  * @Description: 
 -->
 <template>
@@ -12,12 +12,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-});
+defineProps<{ disabled?: boolean }>();
 </script>
 
 <style>
