@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 18:04:25
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 20:48:38
+ * @LastEditTime: 2022-09-05 23:17:15
  * @Description: 
 -->
 <template>
@@ -29,8 +29,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { reactive } from "vue";
-
+import { onMounted, reactive } from "vue";
+import { emitter } from "./ValidateForm.vue";
 export interface RuleProp {
   type: "required" | "email";
   message: string;
@@ -76,8 +76,14 @@ const validateInput = () => {
       return passed;
     });
     inputRef.error = !allPassed;
+    return allPassed;
   }
+  return true;
 };
+
+onMounted(() => {
+  emitter.emit("form-item-created", validateInput);
+});
 </script>
 
 <style></style>

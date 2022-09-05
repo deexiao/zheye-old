@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 21:40:42
+ * @LastEditTime: 2022-09-05 23:17:41
  * @Description: 
 -->
 <template>
@@ -19,7 +19,6 @@
           type="text"
         />
       </div>
-      {{ emailVal }}
       <div class="mb-3">
         <label class="form-label">密码</label>
         <validate-input
@@ -29,7 +28,6 @@
           v-model="passwordVal"
         />
       </div>
-      {{ passwordVal }}
       <template #submit>
         <span class="btn btn-danger">Submit</span>
       </template>
@@ -61,7 +59,7 @@ const passwordRules: RulesProp = [
 ];
 
 const onFormSubmit = (result: boolean) => {
-  console.log(result);
+  console.log("submit", result);
 };
 // const list: ColumnProps[] = [
 //   {
