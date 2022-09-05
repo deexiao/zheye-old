@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     GlobalHeader: typeof import('./src/components/GlobalHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ValidateForm: typeof import('./src/components/ValidateForm.vue')['default']
     ValidateInput: typeof import('./src/components/ValidateInput.vue')['default']
   }
 }
