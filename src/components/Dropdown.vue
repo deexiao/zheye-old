@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 14:45:21
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 15:37:09
+ * @LastEditTime: 2022-09-05 16:03:27
  * @Description: Dropdown
 -->
 
@@ -22,7 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref, watch } from "vue";
+import useClickOutside from "../hooks/useClickOutside";
 
 defineProps({
   title: {
@@ -38,19 +39,12 @@ const toggleOpen = () => {
   isOpen.value = !isOpen.value;
 };
 
-const handler = (e: MouseEvent) => {
-  if (dropdownRef.value) {
-    if (!dropdownRef.value.contains(e.target as HTMLElement) && isOpen.value) {
-      isOpen.value = false;
-    }
-  }
-};
+const isClickOutside = useClickOutside(dropdownRef);
 
-onMounted(() => {
-  document.addEventListener("click", handler);
-});
-onUnmounted(() => {
-  document.removeEventListener("click", handler);
+watch(isClickOutside, () => {
+  if (isOpen.value && isClickOutside.value) {
+    isOpen.value = false;
+  }
 });
 </script>
 

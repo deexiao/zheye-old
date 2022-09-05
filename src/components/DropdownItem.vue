@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 14:48:37
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 14:51:14
+ * @LastEditTime: 2022-09-05 16:05:18
  * @Description: 
 -->
 <template>
@@ -20,7 +20,7 @@ defineProps({
 });
 </script>
 
-<style scoped>
+<style>
 .dropdown-option.is-disabled * {
   color: #6c757d;
   pointer-events: none;
