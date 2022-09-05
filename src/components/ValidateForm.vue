@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 21:24:49
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 23:08:33
+ * @LastEditTime: 2022-09-06 00:29:57
  * @Description: 
 -->
 <template>
@@ -26,9 +26,10 @@ export const emitter = mitt<Events>();
 import mitt from "mitt";
 import { onUnmounted } from "vue";
 
+const emit = defineEmits(["form-submit"]);
+
 let funcArr: ValidateFunc[] = [];
 
-const emit = defineEmits(["form-submit"]);
 const submitForm = () => {
   const result = funcArr.map((func) => func()).every((result) => result);
   emit("form-submit", result);

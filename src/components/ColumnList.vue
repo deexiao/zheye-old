@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 02:01:11
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 16:58:39
+ * @LastEditTime: 2022-09-06 01:38:22
  * @Description: 专栏列表
 -->
 <template>
@@ -17,7 +17,12 @@
           />
           <h5 class="card-title">{{ column.title }}</h5>
           <p class="card-text text-left">{{ column.description }}</p>
-          <a href="#" class="btn btn-outline-primary">进入专栏</a>
+          <router-link
+            :to="`/column/${column.id}`"
+            class="btn btn-outline-primary"
+          >
+            进入专栏
+          </router-link>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 18:04:25
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 23:17:15
+ * @LastEditTime: 2022-09-06 00:25:07
  * @Description: 
 -->
 <template>
@@ -58,6 +58,7 @@ const updateValue = (e: Event) => {
   emit("update:modelValue", targetValue);
 };
 
+// 判断表单选项是否正确，如果true，实现 @blur
 const validateInput = () => {
   if (props.rules) {
     const allPassed = props.rules.every((rule) => {

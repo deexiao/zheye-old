@@ -2,13 +2,11 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 23:17:41
+ * @LastEditTime: 2022-09-06 01:42:31
  * @Description: 
 -->
 <template>
   <div class="container">
-    <global-header :user="currentUser"></global-header>
-    <!-- <column-list :list="list"></column-list> -->
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
@@ -36,17 +34,12 @@
 </template>
 
 <script setup lang="ts">
-import "bootstrap/dist/css/bootstrap.min.css";
-// import ColumnList, { type ColumnProps } from "../components/ColumnList.vue";
-import GlobalHeader, { type UserProps } from "../components/GlobalHeader.vue";
 import ValidateInput, { type RulesProp } from "../components/ValidateInput.vue";
 import ValidateForm from "@/components/ValidateForm.vue";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 
-const currentUser: UserProps = {
-  isLogin: true,
-  name: "viking",
-};
+const router = useRouter();
 
 const emailVal = ref("");
 const emailRules: RulesProp = [
@@ -60,31 +53,8 @@ const passwordRules: RulesProp = [
 
 const onFormSubmit = (result: boolean) => {
   console.log("submit", result);
+  if (result) {
+    router.push({ name: "column", params: { id: 1 } });
+  }
 };
-// const list: ColumnProps[] = [
-//   {
-//     id: 1,
-//     title: "test1的专栏",
-//     description: "这是的test1专栏，有一段非常有意思的简介，可以更新一下欧",
-//     avatar: "https://avatars.githubusercontent.com/u/9313435?v=4",
-//   },
-//   {
-//     id: 2,
-//     title: "test2的专栏",
-//     description: "这是的test2专栏，有一段非常有意思的简介，可以更新一下欧",
-//     avatar: "https://avatars.githubusercontent.com/u/9313435?v=4",
-//   },
-//   {
-//     id: 3,
-//     title: "test3的专栏",
-//     description:
-//       "这是的test1专栏，有一段非常有意思的简介，可以更新一下欧 这是的test1专栏，有一段非常有意思的简介，可以更新一下欧",
-//   },
-//   {
-//     id: 4,
-//     title: "test4的专栏",
-//     description: "这是的test2专栏，有一段非常有意思的简介，可以更新一下欧",
-//     avatar: "https://avatars.githubusercontent.com/u/9313435?v=4",
-//   },
-// ];
 </script>
