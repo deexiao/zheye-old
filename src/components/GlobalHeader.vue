@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 03:59:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 03:59:50
+ * @LastEditTime: 2022-09-05 15:28:31
  * @Description: 
 -->
 <template>
@@ -18,7 +18,17 @@
     </ul>
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
-        <a href="#" class="btn btn-outline-light my-2">你好 {{ user.name }}</a>
+        <dropdown :title="`你好 ${user.name}`">
+          <dropdown-item>
+            <a href="#" class="dropdown-item">新建文章</a>
+          </dropdown-item>
+          <dropdown-item disabled>
+            <a href="#" class="dropdown-item">编辑资料</a>
+          </dropdown-item>
+          <dropdown-item>
+            <a href="#" class="dropdown-item">退出登陆</a>
+          </dropdown-item>
+        </dropdown>
       </li>
     </ul>
   </nav>
@@ -26,6 +36,8 @@
 
 <script lang="ts" setup>
 import type { PropType } from "vue";
+import Dropdown from "./Dropdown.vue";
+import DropdownItem from "./DropdownItem.vue";
 
 export interface UserProps {
   isLogin: boolean;
