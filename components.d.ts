@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    111: typeof import('./src/components/111.vue')['default']
     ColumnList: typeof import('./src/components/ColumnList.vue')['default']
     Dropdown: typeof import('./src/components/Dropdown.vue')['default']
     DropdownItem: typeof import('./src/components/DropdownItem.vue')['default']
@@ -15,5 +16,6 @@ declare module '@vue/runtime-core' {
     GlobalHeader: typeof import('./src/components/GlobalHeader.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ValidateInput: typeof import('./src/components/ValidateInput.vue')['default']
   }
 }
