@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 01:33:46
+ * @LastEditTime: 2022-09-07 02:08:56
  * @Description: 
 -->
 <template>
@@ -59,10 +59,15 @@ const onFormSubmit = (result: boolean) => {
       email: emailVal.value,
       password: passwordVal.value,
     };
-    store.dispatch("loginAndFetch", payload).then((data) => {
-      console.log(data);
-      router.push("/");
-    });
+    store
+      .dispatch("loginAndFetch", payload)
+      .then((data) => {
+        console.log(data);
+        router.push("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 };
 </script>

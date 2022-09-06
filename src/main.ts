@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 00:14:07
+ * @LastEditTime: 2022-09-07 02:08:00
  * @Description: 
  */
 import { createApp } from "vue";
@@ -32,6 +32,11 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(config => {
   store.commit('setLoading', false)
   return config
+}, e => {
+  const { error } = e.response.data
+  store.commit('setError', { status: true, message: error })
+  store.commit('setLoading', false)
+  return Promise.reject(e.response.data)
 })
 
 const app = createApp(App);
