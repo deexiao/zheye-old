@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 17:16:05
+ * @LastEditTime: 2022-09-07 00:34:01
  * @Description: 
 -->
 <template>
@@ -54,10 +54,15 @@ const passwordRules: RulesProp = [
 ];
 
 const onFormSubmit = (result: boolean) => {
-  console.log("submit", result);
   if (result) {
-    router.push("/");
-    store.commit("login");
+    const payload = {
+      email: emailVal.value,
+      password: passwordVal.value,
+    };
+    store.dispatch("login", payload).then((data) => {
+      console.log(data);
+      router.push("/");
+    });
   }
 };
 </script>
