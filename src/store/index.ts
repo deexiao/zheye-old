@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 17:42:40
+ * @LastEditTime: 2022-09-06 18:18:19
  * @Description: 
  */
 import { createStore } from 'vuex'
@@ -11,6 +11,7 @@ interface UserProps {
   isLogin: boolean;
   name?: string;
   id?: number;
+  columnId?: number;
 }
 export interface GlobalDataProps {
   columns: ColumnProps[]; // xxx的专栏
@@ -21,11 +22,14 @@ const store = createStore<GlobalDataProps>({
   state: {
     columns: testData,
     posts: testPosts,
-    user: { isLogin: false }
+    user: { isLogin: true, name: 'viking', columnId: 1 }
   },
   mutations: {
     login(state) {
       state.user = { ...state.user, isLogin: true, name: 'viking' }
+    },
+    createPost(state, newPost) {
+      state.posts.push(newPost)
     }
   },
   getters:{
