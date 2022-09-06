@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 03:59:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 01:22:22
+ * @LastEditTime: 2022-09-06 18:22:39
  * @Description: 
 -->
 <template>
@@ -24,7 +24,9 @@
       <li class="list-inline-item">
         <dropdown :title="`你好 ${user.name}`">
           <dropdown-item>
-            <a href="#" class="dropdown-item">新建文章</a>
+            <router-link to="/create" class="dropdown-item">
+              新建文章
+            </router-link>
           </dropdown-item>
           <dropdown-item disabled>
             <a href="#" class="dropdown-item">编辑资料</a>

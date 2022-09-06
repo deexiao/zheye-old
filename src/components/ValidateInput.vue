@@ -1,13 +1,7 @@
-<!--
- * @Author: Dee.Xiao
- * @Date: 2022-09-05 18:04:25
- * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 00:25:07
- * @Description: 
--->
 <template>
   <div class="validate-input-container pb-3">
     <input
+      v-if="tag !== 'textarea'"
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
       :value="inputRef.val"
@@ -15,6 +9,16 @@
       @input="updateValue"
       v-bind="$attrs"
     />
+    <textarea
+      v-else
+      class="form-control"
+      :class="{ 'is-invalid': inputRef.error }"
+      :value="inputRef.val"
+      @blur="validateInput"
+      @input="updateValue"
+      v-bind="$attrs"
+    >
+    </textarea>
     <span v-if="inputRef.error" class="invalid-feedback">{{
       inputRef.message
     }}</span>
@@ -23,27 +27,34 @@
 
 <script lang="ts">
 export default {
-  // 不继承到根元素
   inheritAttrs: false,
 };
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive } from "vue";
+import { reactive, onMounted, type PropType } from "vue";
 import { emitter } from "./ValidateForm.vue";
+
 export interface RuleProp {
   type: "required" | "email";
   message: string;
 }
-export type RulesProp = RuleProp[];
 
-const emailReg: any =
+export type RulesProp = RuleProp[];
+export type TagType = "input" | "textarea";
+
+const emailReg =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-const props = defineProps<{
-  rules: RulesProp;
-  modelValue: String;
-}>();
+const props = defineProps({
+  rules: Array as PropType<RulesProp>,
+  modelValue: String,
+  tag: {
+    type: String as PropType<TagType>,
+    default: "input",
+  },
+});
+
 const inputRef = reactive({
   val: props.modelValue || "",
   error: false,
@@ -57,8 +68,6 @@ const updateValue = (e: Event) => {
   inputRef.val = targetValue;
   emit("update:modelValue", targetValue);
 };
-
-// 判断表单选项是否正确，如果true，实现 @blur
 const validateInput = () => {
   if (props.rules) {
     const allPassed = props.rules.every((rule) => {
@@ -81,10 +90,7 @@ const validateInput = () => {
   }
   return true;
 };
-
 onMounted(() => {
   emitter.emit("form-item-created", validateInput);
 });
 </script>
-
-<style></style>
