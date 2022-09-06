@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 18:12:22
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 18:28:40
+ * @LastEditTime: 2022-09-06 22:58:58
  * @Description: 点击【新建文章】后进入
 -->
 
@@ -42,8 +42,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import ValidateInput, { type RulesProp } from "../components/ValidateInput.vue";
 import ValidateForm from "../components/ValidateForm.vue";
-import type { GlobalDataProps } from "@/store";
-import type { PostProps } from "@/testData";
+import type { GlobalDataProps, PostProps } from "@/store";
 
 const titleVal = ref("");
 const router = useRouter();
@@ -60,10 +59,10 @@ const onFormSubmit = (result: boolean) => {
     const { columnId } = store.state.user;
     if (columnId) {
       const newPost: PostProps = {
-        id: new Date().getTime(),
+        _id: new Date().getTime().toString(),
         title: titleVal.value,
         content: contentVal.value,
-        columnId,
+        column: columnId.toString(),
         createdAt: new Date().toLocaleString(),
       };
       store.commit("createPost", newPost);

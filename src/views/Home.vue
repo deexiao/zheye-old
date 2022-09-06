@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 21:30:20
+ * @LastEditTime: 2022-09-06 21:56:26
  * @Description: 
 -->
 <template>
@@ -24,15 +24,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import type { GlobalDataProps } from "../store";
 import ColumnList from "../components/ColumnList.vue";
-import axios from "axios";
 
-axios.get("columns").then((res) => {
-  console.log(res);
-});
 const store = useStore<GlobalDataProps>();
+onMounted(() => {
+  store.dispatch("fetchColumns");
+});
 const list = computed(() => store.state.columns);
 </script>
