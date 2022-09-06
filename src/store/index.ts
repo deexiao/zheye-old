@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 18:25:30
+ * @LastEditTime: 2022-09-06 20:46:34
  * @Description: 
  */
 import { createStore } from 'vuex'
@@ -18,6 +18,7 @@ export interface GlobalDataProps {
   posts: PostProps[];     // xxx的专栏下的文章
   user: UserProps;
 }
+
 const store = createStore<GlobalDataProps>({
   state: {
     columns: testData,
