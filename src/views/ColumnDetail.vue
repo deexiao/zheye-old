@@ -2,8 +2,8 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 01:33:07
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 02:12:02
- * @Description: 
+ * @LastEditTime: 2022-09-06 17:43:03
+ * @Description: 点击【进入专栏】后的页面
 -->
 <template>
   <div class="column-detail-page w-75 mx-auto">
@@ -29,11 +29,15 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { testData, testPosts } from "../testData";
 import PostList from "../components/PostList.vue";
+import { useStore } from "vuex";
+import type { GlobalDataProps } from "@/store";
+import { computed } from "vue";
 
 const route = useRoute();
+const store = useStore<GlobalDataProps>();
+
 const currentId = +route.params.id;
-const column = testData.find((c) => c.id === currentId);
-const list = testPosts.filter((post) => post.columnId === currentId);
+const column = computed(() => store.getters.getColumnById(currentId));
+const list = computed(() => store.getters.getPostsByCid(currentId));
 </script>

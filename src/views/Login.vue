@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 01:42:31
+ * @LastEditTime: 2022-09-06 17:16:05
  * @Description: 
 -->
 <template>
@@ -38,8 +38,10 @@ import ValidateInput, { type RulesProp } from "../components/ValidateInput.vue";
 import ValidateForm from "@/components/ValidateForm.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useStore } from "vuex";
 
 const router = useRouter();
+const store = useStore();
 
 const emailVal = ref("");
 const emailRules: RulesProp = [
@@ -54,7 +56,8 @@ const passwordRules: RulesProp = [
 const onFormSubmit = (result: boolean) => {
   console.log("submit", result);
   if (result) {
-    router.push({ name: "column", params: { id: 1 } });
+    router.push("/");
+    store.commit("login");
   }
 };
 </script>

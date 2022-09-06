@@ -2,8 +2,8 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 02:12:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 02:16:26
- * @Description: 
+ * @LastEditTime: 2022-09-06 17:31:53
+ * @Description: 点击【进入专栏】后的lists
 -->
 <template>
   <div class="post-list">

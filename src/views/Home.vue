@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 01:18:02
+ * @LastEditTime: 2022-09-06 16:57:37
  * @Description: 
 -->
 <template>
@@ -19,11 +19,16 @@
       </div>
     </section>
     <h4 class="font-weight-bold text-center">发现精彩</h4>
-    <column-list :list="testData"></column-list>
+    <column-list :list="list"></column-list>
   </div>
 </template>
 
 <script setup lang="ts">
-import { testData } from "../testData";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import type { GlobalDataProps } from "../store";
 import ColumnList from "../components/ColumnList.vue";
+
+const store = useStore<GlobalDataProps>();
+const list = computed(() => store.state.columns);
 </script>
