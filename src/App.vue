@@ -2,23 +2,24 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 01:12:46
+ * @LastEditTime: 2022-09-06 23:30:50
  * @Description: 
 -->
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import GlobalHeader, { type UserProps } from "./components/GlobalHeader.vue";
+import GlobalHeader from "./components/GlobalHeader.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
+import store from "./store";
+import { computed } from "vue";
 
-const currentUser: UserProps = {
-  isLogin: true,
-  name: "viking",
-};
+const currentUser = computed(() => store.state.user);
+const isLoading = computed(() => store.state.loading);
 </script>
 
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
+    <h1 v-if="isLoading">正在读取 😄</h1>
     <RouterView />
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>

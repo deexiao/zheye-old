@@ -2,10 +2,10 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 23:15:00
+ * @LastEditTime: 2022-09-06 23:25:28
  * @Description: 
  */
-import { createStore } from 'vuex'
+import { createStore, type Commit } from 'vuex'
 import axios from 'axios'
 
 interface UserProps {
@@ -35,6 +35,7 @@ export interface PostProps {
   column: string;
 }
 export interface GlobalDataProps {
+  loading: boolean;
   columns: ColumnProps[];
   posts: PostProps[];
   user: UserProps;
@@ -47,6 +48,7 @@ const getAndCommit = async (url: string, mutationName: string, commit: Commit) =
 
 const store = createStore<GlobalDataProps>({
   state: {
+    loading: false,
     columns: [],
     posts: [],
     user: { isLogin: true, name: 'viking', columnId: 1 }
@@ -66,6 +68,9 @@ const store = createStore<GlobalDataProps>({
     },
     fetchPosts(state, rawData) {
       state.posts = rawData.data.list
+    },
+    setLoading(state, status) {
+      state.loading = status
     }
   },
   actions: {
