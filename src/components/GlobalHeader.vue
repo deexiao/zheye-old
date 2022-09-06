@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 03:59:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 18:22:39
+ * @LastEditTime: 2022-09-07 01:11:26
  * @Description: 
 -->
 <template>
@@ -22,7 +22,7 @@
     </ul>
     <ul v-else class="list-inline mb-0">
       <li class="list-inline-item">
-        <dropdown :title="`你好 ${user.name}`">
+        <dropdown :title="`你好 ${user.nickName}`">
           <dropdown-item>
             <router-link to="/create" class="dropdown-item">
               新建文章
@@ -41,14 +41,10 @@
 </template>
 
 <script lang="ts" setup>
+import type { UserProps } from "@/store";
 import Dropdown from "./Dropdown.vue";
 import DropdownItem from "./DropdownItem.vue";
 
-export interface UserProps {
-  isLogin: boolean;
-  name?: string;
-  id?: number;
-}
-
-defineProps<{ user: UserProps }>();
+const props = defineProps<{ user: UserProps }>();
+console.log("user", props.user);
 </script>

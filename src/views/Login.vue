@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 00:34:01
+ * @LastEditTime: 2022-09-07 01:05:16
  * @Description: 
 -->
 <template>
@@ -59,7 +59,7 @@ const onFormSubmit = (result: boolean) => {
       email: emailVal.value,
       password: passwordVal.value,
     };
-    store.dispatch("login", payload).then((data) => {
+    store.dispatch("loginAndFetch", payload).then((data) => {
       console.log(data);
       router.push("/");
     });

@@ -2,17 +2,18 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 00:35:23
+ * @LastEditTime: 2022-09-07 01:21:19
  * @Description: 
  */
 import { createStore, type Commit } from 'vuex'
 import axios from 'axios'
 
-interface UserProps {
+export interface UserProps {
   isLogin: boolean;
-  name?: string;
-  id?: number;
-  columnId?: number;
+  nickName?: string;
+  _id?: string;
+  column?: string;
+  email?: string;
 }
 interface ImageProps {
   _id?: string;
@@ -58,7 +59,7 @@ const store = createStore<GlobalDataProps>({
     loading: false,
     columns: [],
     posts: [],
-    user: { isLogin: false, name: 'viking', columnId: 1 }
+    user: { isLogin: false }
   },
   mutations: {
     // login(state) {
@@ -79,8 +80,13 @@ const store = createStore<GlobalDataProps>({
     setLoading(state, status) {
       state.loading = status
     },
+    fetchCurrentUser(state, rawData) {
+      state.user = { isLogin: true, ...rawData.data }
+    },
     login(state, rawData) {
-      state.token = rawData.data.token
+      const { token } = rawData.data
+      state.token = token
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
     }
   },
   actions: {
@@ -96,9 +102,19 @@ const store = createStore<GlobalDataProps>({
     fetchPosts({ commit }, cid) {
       getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
     },
+    // 获取用户数据
+    fetchCurrentUser({ commit }) {
+      getAndCommit('/user/current', 'fetchCurrentUser', commit)
+    },
     // 登陆拿到token
     login({ commit }, payload) {
       return postAndCommit('/user/login', 'login', commit, payload)
+    },
+    // 登陆拿到token并且获取用户数据
+    loginAndFetch({ dispatch }, loginData) {
+      return dispatch('login', loginData).then(() => {
+        return dispatch('fetchCurrentUser')
+      })
     }
   },
   getters:{
