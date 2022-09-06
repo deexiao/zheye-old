@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 22:25:37
+ * @LastEditTime: 2022-09-06 23:15:00
  * @Description: 
  */
 import { createStore } from 'vuex'
@@ -40,6 +40,11 @@ export interface GlobalDataProps {
   user: UserProps;
 }
 
+const getAndCommit = async (url: string, mutationName: string, commit: Commit) => {
+  const { data } = await axios.get(url)
+  commit(mutationName, data)
+}
+
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
@@ -65,20 +70,16 @@ const store = createStore<GlobalDataProps>({
   },
   actions: {
     // Home 首页获取该用户专栏
-    fetchColumns(context) {
-      axios.get('/columns').then(resp => {
-        context.commit('fetchColumns', resp.data)
-      })
+    fetchColumns({ commit }) {
+      getAndCommit('/columns', 'fetchColumns', commit)
     },
-    fetchColumn(context, cid) {
-      axios.get(`/columns/${cid}`).then(resp => {
-        context.commit('fetchColumn', resp.data)
-      })
+    // 进入专栏后显示的表头信息
+    fetchColumn({ commit }, cid) {
+      getAndCommit(`/columns/${cid}`, 'fetchColumn', commit)
     },
-    fetchPosts(context, cid) {
-      axios.get(`/columns/${cid}/posts`).then(resp => {
-        context.commit('fetchPosts', resp.data)
-      })
+    // 进入专栏后显示的专栏内容
+    fetchPosts({ commit }, cid) {
+      getAndCommit(`/columns/${cid}/posts`, 'fetchPosts', commit)
     }
   },
   getters:{
