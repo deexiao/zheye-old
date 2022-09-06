@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 23:27:16
+ * @LastEditTime: 2022-09-07 00:14:07
  * @Description: 
  */
 import { createApp } from "vue";
@@ -30,7 +30,9 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(config => {
-  store.commit('setLoading', false)
+  setTimeout(() => {
+    store.commit('setLoading', false)
+  }, 500)
   return config
 })
 

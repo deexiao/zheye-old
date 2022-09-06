@@ -2,15 +2,16 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 23:30:50
+ * @LastEditTime: 2022-09-07 00:09:38
  * @Description: 
 -->
 <script setup lang="ts">
+import { computed } from "vue";
 import { RouterView } from "vue-router";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "./store";
-import { computed } from "vue";
+import Loader from "./components/Loader.vue";
 
 const currentUser = computed(() => store.state.user);
 const isLoading = computed(() => store.state.loading);
@@ -19,7 +20,7 @@ const isLoading = computed(() => store.state.loading);
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
-    <h1 v-if="isLoading">正在读取 😄</h1>
+    <loader v-if="isLoading" />
     <RouterView />
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>

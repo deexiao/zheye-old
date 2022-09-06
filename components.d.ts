@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
     Dropdown: typeof import('./src/components/Dropdown.vue')['default']
     DropdownItem: typeof import('./src/components/DropdownItem.vue')['default']
     GlobalHeader: typeof import('./src/components/GlobalHeader.vue')['default']
+    Loader: typeof import('./src/components/Loader.vue')['default']
+    Loading: typeof import('./src/components/Loading.vue')['default']
     PostList: typeof import('./src/components/PostList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
