@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 02:03:30
+ * @LastEditTime: 2022-09-07 02:22:20
  * @Description: 
 -->
 <script setup lang="ts">
@@ -14,6 +14,7 @@ import Loader from "./components/Loader.vue";
 import { useStore } from "vuex";
 import type { GlobalDataProps } from "./store";
 import axios from "axios";
+import Message from "./components/Message.vue";
 
 const store = useStore<GlobalDataProps>();
 const currentUser = computed(() => store.state.user);
@@ -33,7 +34,11 @@ onMounted(() => {
   <div class="container">
     <global-header :user="currentUser"></global-header>
     <loader v-if="isLoading" />
-    <h1>{{ error.message }}</h1>
+    <message
+      type="error"
+      :message="error.message"
+      v-if="error.status"
+    ></message>
     <RouterView />
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>

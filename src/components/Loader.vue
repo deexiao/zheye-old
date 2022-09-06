@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-07 00:02:27
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 00:16:10
+ * @LastEditTime: 2022-09-07 02:38:54
  * @Description: 
 -->
 <template>
@@ -22,17 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from "vue";
+import useDOMCreate from "@/hooks/useDOMCreate";
 
 defineProps({ text: String, background: String });
 
-const node = document.createElement("div");
-node.id = "back";
-document.body.appendChild(node);
-
-onUnmounted(() => {
-  document.body.removeChild(node);
-});
+useDOMCreate("back");
 </script>
 
 <style>
