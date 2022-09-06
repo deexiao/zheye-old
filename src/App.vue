@@ -2,19 +2,30 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 00:09:38
+ * @LastEditTime: 2022-09-07 01:32:02
  * @Description: 
 -->
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { RouterView } from "vue-router";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
-import store from "./store";
 import Loader from "./components/Loader.vue";
+import { useStore } from "vuex";
+import type { GlobalDataProps } from "./store";
+import axios from "axios";
 
+const store = useStore<GlobalDataProps>();
 const currentUser = computed(() => store.state.user);
 const isLoading = computed(() => store.state.loading);
+const token = computed(() => store.state.token);
+
+onMounted(() => {
+  if (!currentUser.value.isLogin && token.value) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token.value}`;
+    store.dispatch("fetchCurrentUser");
+  }
+});
 </script>
 
 <template>

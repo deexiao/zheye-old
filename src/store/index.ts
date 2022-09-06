@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 01:21:19
+ * @LastEditTime: 2022-09-07 01:43:41
  * @Description: 
  */
 import { createStore, type Commit } from 'vuex'
@@ -55,7 +55,7 @@ const postAndCommit = async (url: string, mutationName: string, commit: Commit, 
 
 const store = createStore<GlobalDataProps>({
   state: {
-    token: '',
+    token: localStorage.getItem('token') || '',
     loading: false,
     columns: [],
     posts: [],
@@ -86,6 +86,7 @@ const store = createStore<GlobalDataProps>({
     login(state, rawData) {
       const { token } = rawData.data
       state.token = token
+      localStorage.setItem('token', token)
       axios.defaults.headers.common.Authorization = `Bearer ${token}`
     }
   },
