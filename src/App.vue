@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:00:39
+ * @LastEditTime: 2022-09-07 17:21:55
  * @Description: 
 -->
 <script setup lang="ts">
@@ -34,7 +34,7 @@ watch(
   () => {
     const { status, message } = error.value;
     if (status && message) {
-      createMessage(message, "error");
+      createMessage(message, "error", 2000);
     }
   }
 );
