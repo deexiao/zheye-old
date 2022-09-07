@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:21:55
+ * @LastEditTime: 2022-09-07 17:57:20
  * @Description: 
 -->
 <script setup lang="ts">
@@ -43,7 +43,7 @@ watch(
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
-    <loader v-if="isLoading" />
+    <loader v-if="isLoading"></loader>
     <RouterView />
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>

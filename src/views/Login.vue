@@ -2,11 +2,12 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:22:12
+ * @LastEditTime: 2022-09-07 17:44:25
  * @Description: 
 -->
 <template>
-  <div class="container">
+  <div class="login-page mx-auto p-3 w-330">
+    <h5 class="my-4 text-center">登录到者也</h5>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
@@ -27,7 +28,9 @@
         />
       </div>
       <template #submit>
-        <span class="btn btn-danger">Submit</span>
+        <button type="submit" class="btn btn-primary btn-block btn-large">
+          登录
+        </button>
       </template>
     </validate-form>
   </div>

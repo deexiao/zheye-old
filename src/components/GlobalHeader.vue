@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 03:59:43
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 01:11:26
+ * @LastEditTime: 2022-09-07 18:17:34
  * @Description: 
 -->
 <template>
@@ -15,7 +15,7 @@
         >
       </li>
       <li class="list-inline-item">
-        <router-link to="/login" class="btn btn-outline-light my-2"
+        <router-link to="/signup" class="btn btn-outline-light my-2"
           >注册</router-link
         >
       </li>
@@ -32,7 +32,7 @@
             <a href="#" class="dropdown-item">编辑资料</a>
           </dropdown-item>
           <dropdown-item>
-            <a href="#" class="dropdown-item">退出登陆</a>
+            <a href="#" class="dropdown-item" @click="handleLogout">退出登陆</a>
           </dropdown-item>
         </dropdown>
       </li>
@@ -42,9 +42,21 @@
 
 <script lang="ts" setup>
 import type { UserProps } from "@/store";
+import createMessage from "./createMessage";
 import Dropdown from "./Dropdown.vue";
 import DropdownItem from "./DropdownItem.vue";
+import { useRouter } from "vue-router";
+import store from "@/store";
 
-const props = defineProps<{ user: UserProps }>();
-console.log("user", props.user);
+defineProps<{ user: UserProps }>();
+
+const router = useRouter();
+
+const handleLogout = () => {
+  store.commit("logout");
+  createMessage("退出登录成功，2秒后跳转到首页", "success", 2000);
+  setTimeout(() => {
+    router.push("/");
+  }, 2000);
+};
 </script>

@@ -2,12 +2,11 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-06 16:49:46
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 01:57:22
+ * @LastEditTime: 2022-09-07 18:19:31
  * @Description: 
  */
 import { createStore, type Commit } from 'vuex'
 import axios from 'axios'
-
 export interface UserProps {
   isLogin: boolean;
   nickName?: string;
@@ -97,6 +96,12 @@ const store = createStore<GlobalDataProps>({
       state.token = token
       localStorage.setItem('token', token)
       axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    },
+    logout(state) {
+      state.token = ''
+      state.user = { isLogin: false }
+      localStorage.removeItem('token')
+      delete axios.defaults.headers.common.Authorization
     }
   },
   actions: {

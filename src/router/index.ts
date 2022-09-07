@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 18:11:06
+ * @LastEditTime: 2022-09-07 17:43:12
  * @Description:
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -10,6 +10,7 @@ import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import ColumnDetail from '@/views/ColumnDetail.vue'
 import CreatePost from '@/views/CreatePost.vue'
+import Signup from '@/views/Signup.vue'
 import store from '@/store'
 const routerHistory = createWebHistory()
 const router = createRouter({
@@ -24,6 +25,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
+      meta: { redirectAlreadyLogin: true }
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup,
       meta: { redirectAlreadyLogin: true }
     },
     {
