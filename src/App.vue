@@ -2,11 +2,11 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 02:22:20
+ * @LastEditTime: 2022-09-07 17:00:39
  * @Description: 
 -->
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { RouterView } from "vue-router";
 import GlobalHeader from "./components/GlobalHeader.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +14,7 @@ import Loader from "./components/Loader.vue";
 import { useStore } from "vuex";
 import type { GlobalDataProps } from "./store";
 import axios from "axios";
-import Message from "./components/Message.vue";
+import createMessage from "./components/createMessage";
 
 const store = useStore<GlobalDataProps>();
 const currentUser = computed(() => store.state.user);
@@ -28,17 +28,22 @@ onMounted(() => {
     store.dispatch("fetchCurrentUser");
   }
 });
+
+watch(
+  () => error.value.status,
+  () => {
+    const { status, message } = error.value;
+    if (status && message) {
+      createMessage(message, "error");
+    }
+  }
+);
 </script>
 
 <template>
   <div class="container">
     <global-header :user="currentUser"></global-header>
     <loader v-if="isLoading" />
-    <message
-      type="error"
-      :message="error.message"
-      v-if="error.status"
-    ></message>
     <RouterView />
     <footer class="text-center py-4 text-secondary bg-light mt-6">
       <small>

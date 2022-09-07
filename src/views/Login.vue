@@ -2,7 +2,7 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 02:08:56
+ * @LastEditTime: 2022-09-07 16:54:48
  * @Description: 
 -->
 <template>
@@ -39,6 +39,7 @@ import ValidateForm from "@/components/ValidateForm.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useStore } from "vuex";
+import createMessage from "@/components/createMessage";
 
 const router = useRouter();
 const store = useStore();
@@ -62,8 +63,10 @@ const onFormSubmit = (result: boolean) => {
     store
       .dispatch("loginAndFetch", payload)
       .then((data) => {
-        console.log(data);
-        router.push("/");
+        createMessage("登录成功 2秒后跳转首页", "success");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       })
       .catch((e) => {
         console.log(e);
