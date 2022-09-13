@@ -1,62 +1,79 @@
 <!--
  * @Author: Dee.Xiao
- * @Date: 2022-09-05 01:40:17
+ * @Date: 2022-09-07 18:51:09
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:57:20
+ * @LastEditTime: 2022-09-07 20:55:49
  * @Description: 
 -->
-<script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
-import { RouterView } from "vue-router";
-import GlobalHeader from "./components/GlobalHeader.vue";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Loader from "./components/Loader.vue";
-import { useStore } from "vuex";
-import type { GlobalDataProps } from "./store";
-import axios from "axios";
-import createMessage from "./components/createMessage";
-
-const store = useStore<GlobalDataProps>();
-const currentUser = computed(() => store.state.user);
-const isLoading = computed(() => store.state.loading);
-const token = computed(() => store.state.token);
-const error = computed(() => store.state.error);
-
-onMounted(() => {
-  if (!currentUser.value.isLogin && token.value) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token.value}`;
-    store.dispatch("fetchCurrentUser");
-  }
-});
-
-watch(
-  () => error.value.status,
-  () => {
-    const { status, message } = error.value;
-    if (status && message) {
-      createMessage(message, "error", 2000);
-    }
-  }
-);
-</script>
-
 <template>
-  <div class="container">
+  <div class="container-fluid px-0 flex-shrink-0">
     <global-header :user="currentUser"></global-header>
     <loader v-if="isLoading"></loader>
-    <RouterView />
-    <footer class="text-center py-4 text-secondary bg-light mt-6">
-      <small>
-        <ul class="list-inline mb-0">
-          <li class="list-inline-item">© 2020 者也专栏</li>
-          <li class="list-inline-item">课程</li>
-          <li class="list-inline-item">文档</li>
-          <li class="list-inline-item">联系</li>
-          <li class="list-inline-item">更多</li>
-        </ul>
-      </small>
-    </footer>
+    <router-view></router-view>
   </div>
+  <footer class="text-center py-4 text-secondary bg-light mt-auto">
+    <small>
+      <ul class="list-inline mb-0">
+        <li class="list-inline-item">
+          © 慕课网（imooc.com）版权所有 | 津ICP备20000929号-1
+        </li>
+        <li class="list-inline-item">
+          <a href="https://coding.imooc.com/class/449.html" target="_blank"
+            >购买课程</a
+          >
+        </li>
+        <li class="list-inline-item">
+          <a href="http://docs.vikingship.xyz/" target="_blank">文档</a>
+        </li>
+        <li class="list-inline-item">
+          <a href="http://api.vikingship.xyz/" target="_blank">API 在线调试</a>
+        </li>
+        <li class="list-inline-item">
+          <a href="http://showcase.vikingship.xyz/" target="_blank"
+            >组件库演示</a
+          >
+        </li>
+      </ul>
+    </small>
+  </footer>
 </template>
 
-<style scoped></style>
+<script lang="ts">
+import { defineComponent, computed, watch } from "vue";
+import { useStore } from "vuex";
+import "bootstrap/dist/css/bootstrap.min.css";
+import GlobalHeader from "./components/GlobalHeader.vue";
+import Loader from "./components/Loader.vue";
+import createMessage from "./components/createMessage";
+
+import type { GlobalDataProps } from "./store";
+export default defineComponent({
+  name: "App",
+  components: {
+    GlobalHeader,
+    Loader,
+  },
+  setup() {
+    const store = useStore<GlobalDataProps>();
+    const currentUser = computed(() => store.state.user);
+    const isLoading = computed(() => store.state.loading);
+    const error = computed(() => store.state.error);
+    watch(
+      () => error.value.status,
+      () => {
+        const { status, message } = error.value;
+        if (status && message) {
+          createMessage(message, "error", 2000);
+        }
+      }
+    );
+    return {
+      currentUser,
+      isLoading,
+      error,
+    };
+  },
+});
+</script>
+
+<style></style>

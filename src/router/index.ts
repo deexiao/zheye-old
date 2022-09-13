@@ -2,16 +2,20 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:43:12
+ * @LastEditTime: 2022-09-07 19:56:43
  * @Description:
  */
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Login from '@/views/Login.vue'
-import ColumnDetail from '@/views/ColumnDetail.vue'
-import CreatePost from '@/views/CreatePost.vue'
-import Signup from '@/views/Signup.vue'
-import store from '@/store'
+import axios from 'axios'
+import Home from '../views/Home.vue'
+// import Login from '../views/Login.vue'
+import Login from '../views/el-Login.vue'
+import Signup from '../views/Signup.vue'
+import ColumnDetail from '../views/ColumnDetail.vue'
+import CreatePost from '../views/CreatePost.vue'
+import PostDetail from '../views/PostDetail.vue'
+import EditProfile from '../views/EditProfile.vue'
+import store from '../store'
 const routerHistory = createWebHistory()
 const router = createRouter({
   history: routerHistory,
@@ -43,16 +47,50 @@ const router = createRouter({
       path: '/column/:id',
       name: 'column',
       component: ColumnDetail
+    },
+    {
+      path: '/posts/:id',
+      name: 'post',
+      component: PostDetail
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: EditProfile,
+      meta: { requiredLogin: true }
     }
   ]
 })
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiredLogin && !store.state.user.isLogin) {
-    next({ name: 'login' })
-  } else if (to.meta.redirectAlreadyLogin && store.state.user.isLogin) {
-    next('/')
+  const { user, token } = store.state
+  const { requiredLogin, redirectAlreadyLogin } = to.meta
+  if (!user.isLogin) {
+    if (token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      store.dispatch('fetchCurrentUser').then(() => {
+        if (redirectAlreadyLogin) {
+          next('/')
+        } else {
+          next()
+        }
+      }).catch(e => {
+        console.error(e)
+        store.commit('logout')
+        next('login')
+      })
+    } else {
+      if (requiredLogin) {
+        next('login')
+      } else {
+        next()
+      }
+    }
   } else {
-    next()
+    if (redirectAlreadyLogin) {
+      next('/')
+    } else {
+      next()
+    }
   }
 })
 

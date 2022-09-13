@@ -37,6 +37,9 @@
           :rules="repeatPasswordRules"
           v-model="formData.repeatPassword"
         />
+        <div class="form-text">
+          <router-link to="/login">已经有账户了？去登录</router-link>
+        </div>
       </div>
       <template #submit>
         <button type="submit" class="btn btn-primary btn-block btn-large">
@@ -47,59 +50,86 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive } from "vue";
+<script lang="ts">
+import { defineComponent, reactive } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import ValidateInput, { type RulesProp } from "../components/ValidateInput.vue";
 import ValidateForm from "../components/ValidateForm.vue";
 import createMessage from "../components/createMessage";
 
-const formData = reactive({
-  email: "",
-  nickName: "",
-  password: "",
-  repeatPassword: "",
-});
-const router = useRouter();
-const emailRules: RulesProp = [
-  { type: "required", message: "电子邮箱地址不能为空" },
-  { type: "email", message: "请输入正确的电子邮箱格式" },
-];
-const nameRules: RulesProp = [{ type: "required", message: "昵称不能为空" }];
-const passwordRules: RulesProp = [
-  { type: "required", message: "密码不能为空" },
-];
-const repeatPasswordRules: RulesProp = [
-  { type: "required", message: "重复密码不能为空" },
-  {
-    type: "custom",
-    validator: () => {
-      return formData.password === formData.repeatPassword;
-    },
-    message: "密码不相同",
+export default defineComponent({
+  name: "Signup",
+  components: {
+    ValidateInput,
+    ValidateForm,
   },
-];
-const onFormSubmit = (result: boolean) => {
-  if (result) {
-    const payload = {
-      email: formData.email,
-      password: formData.password,
-      nickName: formData.nickName,
+  setup() {
+    const formData = reactive({
+      email: "",
+      nickName: "",
+      password: "",
+      repeatPassword: "",
+    });
+    const router = useRouter();
+    const emailRules: RulesProp = [
+      { type: "required", message: "电子邮箱地址不能为空" },
+      { type: "email", message: "请输入正确的电子邮箱格式" },
+    ];
+    const nameRules: RulesProp = [
+      { type: "required", message: "昵称不能为空" },
+    ];
+    const passwordRules: RulesProp = [
+      { type: "required", message: "密码不能为空" },
+      {
+        type: "range",
+        min: { message: "你的密码至少包括六位，不能含有空格", length: 6 },
+      },
+    ];
+    const repeatPasswordRules: RulesProp = [
+      { type: "required", message: "重复密码不能为空" },
+      {
+        type: "range",
+        min: { message: "你的密码至少包括六位，不能含有空格", length: 6 },
+      },
+      {
+        type: "custom",
+        validator: () => {
+          return formData.password === formData.repeatPassword;
+        },
+        message: "密码不相同",
+      },
+    ];
+    const onFormSubmit = (result: boolean) => {
+      if (result) {
+        const payload = {
+          email: formData.email,
+          password: formData.password,
+          nickName: formData.nickName,
+        };
+        axios
+          .post("/users/", payload)
+          .then(() => {
+            createMessage("注册成功 正在跳转登录页面", "success", 2000);
+            setTimeout(() => {
+              router.push("/login");
+            }, 2000);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
     };
-    axios
-      .post("/users/", payload)
-      .then(() => {
-        createMessage("注册成功 正在跳转登录页面", "success", 2000);
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-};
+    return {
+      emailRules,
+      nameRules,
+      passwordRules,
+      repeatPasswordRules,
+      onFormSubmit,
+      formData,
+    };
+  },
+});
 </script>
 
 <style>

@@ -1,100 +1,125 @@
 <template>
-  <div class="validate-input-container pb-3">
+  <div class="validate-input-container pb-3 position-relative">
     <input
       v-if="tag !== 'textarea'"
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
-      :value="inputRef.val"
+      v-model="inputVal"
       @blur="validateInput"
-      @input="updateValue"
       v-bind="$attrs"
     />
     <textarea
       v-else
       class="form-control"
       :class="{ 'is-invalid': inputRef.error }"
-      :value="inputRef.val"
+      v-model="inputVal"
       @blur="validateInput"
-      @input="updateValue"
       v-bind="$attrs"
     >
     </textarea>
-    <span v-if="inputRef.error" class="invalid-feedback">{{
-      inputRef.message
-    }}</span>
+    <span v-if="inputRef.error" class="invalid-feedback position-absolute mt-1">{{ inputRef.message }}</span>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  inheritAttrs: false,
-};
-</script>
-
-<script setup lang="ts">
-import { reactive, onMounted, type PropType } from "vue";
-import { emitter } from "./ValidateForm.vue";
-
-export interface RuleProp {
-  type: "required" | "email" | "custom";
-  message: string;
+import { defineComponent, reactive, type PropType, onMounted, computed, inject } from 'vue';
+import { emitter } from './ValidateForm.vue';
+const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+interface RuleProp {
+  type: 'required' | 'email' | 'custom' | 'range';
+  message?: string;
   validator?: () => boolean;
+  min?: { length: number; message: string };
+  max?: { length: number; message: string };
 }
-
 export type RulesProp = RuleProp[];
-export type TagType = "input" | "textarea";
-
-const emailReg =
-  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-const props = defineProps({
-  rules: Array as PropType<RulesProp>,
-  modelValue: String,
-  tag: {
-    type: String as PropType<TagType>,
-    default: "input",
+export type TagType = 'input' | 'textarea';
+export default defineComponent({
+  props: {
+    rules: Array as PropType<RulesProp>,
+    modelValue: String,
+    tag: {
+      type: String as PropType<TagType>,
+      default: 'input'
+    }
   },
-});
-
-const inputRef = reactive({
-  val: props.modelValue || "",
-  error: false,
-  message: "",
-});
-
-const emit = defineEmits(["update:modelValue"]);
-
-const updateValue = (e: Event) => {
-  const targetValue = (e.target as HTMLInputElement).value;
-  inputRef.val = targetValue;
-  emit("update:modelValue", targetValue);
-};
-const validateInput = () => {
-  if (props.rules) {
-    const allPassed = props.rules.every((rule) => {
-      let passed = true;
-      inputRef.message = rule.message;
-      switch (rule.type) {
-        case "required":
-          passed = inputRef.val.trim() !== "";
-          break;
-        case "email":
-          passed = emailReg.test(inputRef.val);
-          break;
-        case "custom":
-          passed = rule.validator ? rule.validator() : true;
-          break;
-        default:
-          break;
+  inheritAttrs: false,
+  setup(props, context) {
+    const inputVal = computed({
+      get: () => props.modelValue || '',
+      set: val => {
+        context.emit('update:modelValue', val);
       }
-      return passed;
     });
-    inputRef.error = !allPassed;
-    return allPassed;
+    const inputRef = reactive({
+      error: false,
+      message: ''
+    });
+    const clearInput = () => {
+      inputVal.value = '';
+    };
+    // 添加一个方法，清空这个 input 的错误和消息，供手动调用
+    const clearStatus = () => {
+      inputRef.error = false;
+      inputRef.message = '';
+    };
+    const validateInput = () => {
+      if (props.rules) {
+        const allPassed = props.rules.every(rule => {
+          let passed = true;
+          inputRef.message = rule.message || '';
+          const { value } = inputVal;
+          switch (rule.type) {
+            case 'required':
+              passed = value.trim() !== '';
+              break;
+            case 'email':
+              passed = emailReg.test(value);
+              break;
+            case 'range': {
+              const { min, max } = rule;
+              if (min && value.trim().length < min.length) {
+                passed = false;
+                inputRef.message = min.message;
+              }
+              if (max && value.trim().length > max.length) {
+                passed = false;
+                inputRef.message = max.message;
+              }
+              break;
+            }
+            case 'custom':
+              passed = rule.validator ? rule.validator() : true;
+              break;
+            default:
+              break;
+          }
+          return passed;
+        });
+        inputRef.error = !allPassed;
+        return allPassed;
+      }
+      return true;
+    };
+    onMounted(() => {
+      emitter.emit('form-item-created', {
+        validator: validateInput,
+        clearInput,
+        clearStatus,
+        formName: inject('formName')
+      });
+    });
+    return {
+      inputRef,
+      validateInput,
+      inputVal
+    };
   }
-  return true;
-};
-onMounted(() => {
-  emitter.emit("form-item-created", validateInput);
 });
 </script>
+
+<style>
+.validate-input-container .error-message {
+  bottom: -5px;
+}
+</style>

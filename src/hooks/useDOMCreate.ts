@@ -1,10 +1,3 @@
-/*
- * @Author: Dee.Xiao
- * @Date: 2022-09-07 02:27:17
- * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:51:18
- * @Description: 
- */
 import { onUnmounted } from 'vue'
 
 function useDOMCreate(nodeId: string) {

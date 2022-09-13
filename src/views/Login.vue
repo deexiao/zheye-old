@@ -1,14 +1,14 @@
 <!--
  * @Author: Dee.Xiao
- * @Date: 2022-09-05 01:40:17
+ * @Date: 2022-09-07 19:57:19
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:44:25
+ * @LastEditTime: 2022-09-07 20:55:32
  * @Description: 
 -->
 <template>
   <div class="login-page mx-auto p-3 w-330">
     <h5 class="my-4 text-center">登录到者也</h5>
-    <validate-form @form-submit="onFormSubmit">
+    <validate-form @form-submit="onFormSubmit" ref="loginForm">
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
         <validate-input
@@ -16,64 +16,77 @@
           v-model="emailVal"
           placeholder="请输入邮箱地址"
           type="text"
+          ref="inputRef"
         />
       </div>
       <div class="mb-3">
         <label class="form-label">密码</label>
-        <validate-input
-          type="password"
-          placeholder="请输入密码"
-          :rules="passwordRules"
-          v-model="passwordVal"
-        />
+        <validate-input type="password" placeholder="请输入密码" :rules="passwordRules" v-model="passwordVal" />
+        <div class="form-text">
+          <router-link to="/signup">还没有账户？去注册一个新的吧！</router-link>
+        </div>
       </div>
       <template #submit>
-        <button type="submit" class="btn btn-primary btn-block btn-large">
-          登录
-        </button>
+        <button type="submit" class="btn btn-primary btn-block btn-large">登录</button>
       </template>
     </validate-form>
   </div>
 </template>
 
-<script setup lang="ts">
-import ValidateInput, { type RulesProp } from "../components/ValidateInput.vue";
-import ValidateForm from "@/components/ValidateForm.vue";
-import { useRouter } from "vue-router";
-import { ref } from "vue";
-import { useStore } from "vuex";
-import createMessage from "@/components/createMessage";
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import ValidateInput, { type RulesProp } from '../components/ValidateInput.vue';
+import ValidateForm from '../components/ValidateForm.vue';
+import createMessage from '../components/createMessage';
 
-const router = useRouter();
-const store = useStore();
-
-const emailVal = ref("");
-const emailRules: RulesProp = [
-  { type: "required", message: "电子邮箱地址不能为空" },
-  { type: "email", message: "请输入正确的电子邮箱格式" },
-];
-const passwordVal = ref("");
-const passwordRules: RulesProp = [
-  { type: "required", message: "密码不能为空" },
-];
-
-const onFormSubmit = (result: boolean) => {
-  if (result) {
-    const payload = {
-      email: emailVal.value,
-      password: passwordVal.value,
+export default defineComponent({
+  name: 'Login',
+  components: {
+    ValidateInput,
+    ValidateForm
+  },
+  setup() {
+    const emailVal = ref('');
+    const loginForm = ref();
+    const router = useRouter();
+    const store = useStore();
+    const emailRules: RulesProp = [
+      { type: 'required', message: '电子邮箱地址不能为空' },
+      { type: 'email', message: '请输入正确的电子邮箱格式' }
+    ];
+    const passwordVal = ref('');
+    const passwordRules: RulesProp = [{ type: 'required', message: '密码不能为空' }];
+    const onFormSubmit = (result: boolean) => {
+      if (result) {
+        const payload = {
+          email: emailVal.value,
+          password: passwordVal.value
+        };
+        store
+          .dispatch('loginAndFetch', payload)
+          .then(() => {
+            createMessage('登录成功 2秒后跳转首页', 'success', 2000);
+            setTimeout(() => {
+              router.push('/');
+            }, 2000);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      } else {
+        loginForm.value.clearInputs();
+      }
     };
-    store
-      .dispatch("loginAndFetch", payload)
-      .then(() => {
-        createMessage("登录成功 2秒后跳转首页", "success", 2000);
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    return {
+      emailRules,
+      emailVal,
+      passwordVal,
+      passwordRules,
+      onFormSubmit,
+      loginForm
+    };
   }
-};
+});
 </script>

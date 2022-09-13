@@ -1,18 +1,13 @@
 <!--
  * @Author: Dee.Xiao
- * @Date: 2022-09-05 14:45:21
+ * @Date: 2022-09-07 19:55:19
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-05 16:54:38
- * @Description: Dropdown
+ * @LastEditTime: 2022-09-07 20:07:36
+ * @Description: 
 -->
-
 <template>
   <div class="dropdown" ref="dropdownRef">
-    <a
-      href="#"
-      class="btn btn-outline-light my-2 dropdown-toggle"
-      @click.prevent="toggleOpen"
-    >
+    <a href="#" class="btn btn-outline-light my-2 dropdown-toggle" @click.prevent="toggleOpen">
       {{ title }}
     </a>
     <ul class="dropdown-menu" :style="{ display: 'block' }" v-if="isOpen">
@@ -21,26 +16,48 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, watch } from "vue";
-import useClickOutside from "../hooks/useClickOutside";
+<script lang="ts">
+import { defineComponent, ref, watch, onUnmounted } from 'vue';
+import mitt from 'mitt';
+import useClickOutside from '../hooks/useClickOutside';
+export const emitter = mitt();
+export default defineComponent({
+  name: 'Dropdown',
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  },
+  emits: ['item-clicked'],
+  setup(props, context) {
+    const isOpen = ref(false);
+    const dropdownRef = ref<null | HTMLElement>(null);
+    const toggleOpen = () => {
+      isOpen.value = !isOpen.value;
+    };
+    const dropDownItemClicked = (e: any) => {
+      if (e.props.closeAfterClick) {
+        isOpen.value = false;
+      }
+      context.emit('item-clicked', e);
+    };
+    emitter.on('dropdown-item-clicked', dropDownItemClicked);
+    onUnmounted(() => {
+      emitter.off('dropdown-item-clicked', dropDownItemClicked);
+    });
+    const isClickOutside = useClickOutside(dropdownRef);
 
-defineProps<{ title: string }>();
-
-const isOpen = ref(false);
-const dropdownRef = ref<null | HTMLElement>(null);
-
-const toggleOpen = () => {
-  isOpen.value = !isOpen.value;
-};
-
-const isClickOutside = useClickOutside(dropdownRef);
-
-watch(isClickOutside, () => {
-  if (isOpen.value && isClickOutside.value) {
-    isOpen.value = false;
+    watch(isClickOutside, () => {
+      if (isOpen.value && isClickOutside.value) {
+        isOpen.value = false;
+      }
+    });
+    return {
+      isOpen,
+      toggleOpen,
+      dropdownRef
+    };
   }
 });
 </script>
-
-<style scoped></style>

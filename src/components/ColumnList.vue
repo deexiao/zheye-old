@@ -1,9 +1,9 @@
 <!--
  * @Author: Dee.Xiao
- * @Date: 2022-09-05 02:01:11
+ * @Date: 2022-09-07 19:55:19
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-06 22:36:39
- * @Description: 专栏列表
+ * @LastEditTime: 2022-09-07 19:55:22
+ * @Description: 
 -->
 <template>
   <div class="row">
@@ -11,49 +11,60 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body text-center">
           <img
-            :src="column.avatar && column.avatar.url"
+            :src="column.avatar && column.avatar.fitUrl"
             :alt="column.title"
             class="rounded-circle border border-light my-3"
           />
-          <h5 class="card-title">{{ column.title }}</h5>
-          <p class="card-text text-left">{{ column.description }}</p>
-          <router-link
-            :to="`/column/${column._id}`"
-            class="btn btn-outline-primary"
-          >
-            进入专栏
-          </router-link>
+          <h5 class="card-title text-truncate">{{ column.title }}</h5>
+          <p class="card-text text-left description text-secondary">
+            {{ column.description }}
+          </p>
+          <router-link :to="`/column/${column._id}`" class="btn btn-outline-primary"> 进入专栏 </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed } from "vue";
-import noImageIcon from "@/assets/no-image-icon.png";
-import type { ColumnProps } from "@/store";
+<script lang="ts">
+import { defineComponent, type PropType, computed } from 'vue';
+import type { ColumnProps } from '../store';
+import { addColumnAvatar } from '../helper';
 
-const props = defineProps<{ list: ColumnProps[] }>();
-
-const columnList = computed(() => {
-  return props.list.map((column) => {
-    if (!column.avatar) {
-      column.avatar = {
-        url: noImageIcon,
-      };
-    } else {
-      column.avatar.url =
-        column.avatar.url + "?x-oss-process=image/resize,m_pad,h_50,w_50";
+export default defineComponent({
+  name: 'ColumnList',
+  props: {
+    list: {
+      type: Array as PropType<ColumnProps[]>,
+      required: true
     }
-    return column;
-  });
+  },
+  setup(props) {
+    const columnList = computed(() => {
+      return props.list.map(column => {
+        addColumnAvatar(column, 50, 50);
+        return column;
+      });
+    });
+    return {
+      columnList
+    };
+  }
 });
 </script>
-
 <style scoped>
 .card-body img {
   width: 50px;
   height: 50px;
+}
+.description {
+  line-height: 20px;
+  height: 60px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

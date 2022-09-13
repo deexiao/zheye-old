@@ -2,14 +2,16 @@
  * @Author: Dee.Xiao
  * @Date: 2022-09-05 01:40:17
  * @LastEditors: Dee.Xiao
- * @LastEditTime: 2022-09-07 17:59:28
+ * @LastEditTime: 2022-09-08 15:49:04
  * @Description: 
  */
-import { createApp } from "vue";
+import { createApp, nextTick } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from './store'
 import axios from "axios";
+
+import 'easymde/dist/easymde.min.css'
 
 // 替换 baseURL
 axios.defaults.baseURL = 'http://apis.imooc.com/api/'
@@ -31,14 +33,16 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(config => {
-  setTimeout(() => {
+  nextTick(() => {
     store.commit('setLoading', false)
-  }, 1000)
+  })
   return config
 }, e => {
   const { error } = e.response.data
   store.commit('setError', { status: true, message: error })
-  store.commit('setLoading', false)
+  nextTick(() => {
+    store.commit('setLoading', false)
+  })
   return Promise.reject(e.response.data)
 })
 
